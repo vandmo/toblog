@@ -8,12 +8,15 @@
         font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
         font-size: 100%;
       }
-      #status {
-        /* avoid an excessively wide status text */
-        white-space: pre;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        max-width: 400px;
+      .wide {
+        width: 450px;
+        text-align: center;
+      }
+      #comment {
+        min-height: 200px;
+      }
+      .hidden {
+        display: none;
       }
     </style>
 
@@ -21,8 +24,11 @@
 
   </head>
   <body>
-    <div id="status"></div>
-    <img id="image-result" hidden>
+    <div class="wide" id="title"></div>
+    <div id="main" class="wide hidden">
+      <textarea id="comment" class="wide"></textarea>
+      <button>Blog</button>
+    </div>
   </body>
 </html>
 
