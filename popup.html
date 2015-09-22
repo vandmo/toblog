@@ -10,6 +10,8 @@
       }
       .wide {
         width: 450px;
+      }
+      #title {
         text-align: center;
       }
       #comment {
@@ -27,7 +29,13 @@
     <div class="wide" id="title"></div>
     <div id="main" class="wide hidden">
       <textarea id="comment" class="wide"></textarea>
-      <button>Blog</button>
+      <p>
+        <input type="checkbox" id="includeYear" />
+        <label for="includeYear">Include year in title</label>
+      </p>
+      <p>
+        <button id="blogButton">Blog</button>
+      </p>
     </div>
   </body>
 </html>

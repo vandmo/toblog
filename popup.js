@@ -27,12 +27,42 @@ function setTitle(titleId) {
       error(3);
       return;
     }
+
     document.getElementById("title").textContent = response.Title+", "+response.Year;
+
+    document.getElementById("blogButton").addEventListener("click", function() {
+      document.getElementById("blogButton").disabled = "disabled";
+
+      var title = response.Title;
+      if (document.getElementById("includeYear").checked) {
+        title = title + " ("+response.Year+")";
+      }
+      var comment = document.getElementById("comment").value;
+      var imdbUrl = "http://www.imdb.com/title/"+titleId+"/";
+      blog(title, imdbUrl, comment);
+    });
+
   };
   x.onerror = function() {
     error(1);
   };
   x.send();
+}
+
+function blog(title, imdbUrl, comment) {
+  var url = "http://www.vandmo.se/wp-json/wp/v2/posts";
+  var x = new XMLHttpRequest();
+  x.open("POST", url);
+  x.onload = function() {
+    var response = x.responseText;
+    if (!response) {
+      error(4);
+      return;
+    }
+    alert(response);
+    window.close();
+  }
+  x.send("{title:title}");
 }
 
 function error(num) {
