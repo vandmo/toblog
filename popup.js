@@ -39,9 +39,8 @@ function setTitle(titleId) {
       }
       var comment = document.getElementById("comment").value;
       var imdbUrl = "http://www.imdb.com/title/"+titleId+"/";
-      blog(title, imdbUrl, comment);
+      blog(titleId, title, imdbUrl, comment);
     });
-
   };
   x.onerror = function() {
     error(1);
@@ -49,20 +48,10 @@ function setTitle(titleId) {
   x.send();
 }
 
-function blog(title, imdbUrl, comment) {
-  var url = "http://www.vandmo.se/wp-json/wp/v2/posts";
-  var x = new XMLHttpRequest();
-  x.open("POST", url);
-  x.onload = function() {
-    var response = x.responseText;
-    if (!response) {
-      error(4);
-      return;
-    }
-    alert(response);
-    window.close();
-  }
-  x.send("{title:title}");
+function blog(titleId, title, imdbUrl, comment) {
+  var v = {};
+  v[titleId] = {title:title, imdbUrl:imdbUrl, comment:comment};
+  chrome.storage.sync.set(v);
 }
 
 function error(num) {
