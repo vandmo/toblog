@@ -1,0 +1,6 @@
+.*.swp
+.junk/
+.project
+.settings/
+.vagrant
+target/
