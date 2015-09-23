@@ -49,9 +49,14 @@ function setTitle(titleId) {
 }
 
 function blog(titleId, title, imdbUrl, comment) {
-  var v = {};
-  v[titleId] = {title:title, imdbUrl:imdbUrl, comment:comment};
-  chrome.storage.sync.set(v);
+  var when = new Date().getTime();
+  chrome.storage.sync.get("bloggedMovies", function(v) {
+    if (!v.bloggedMovies) {
+      v.bloggedMovies = {};
+    }
+    v.bloggedMovies[titleId] = {title:title, imdbUrl:imdbUrl, comment:comment, when:when};
+    chrome.storage.sync.set(v);
+  });
 }
 
 function error(num) {
