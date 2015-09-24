@@ -10,7 +10,6 @@
   "permissions": [
     "activeTab",
     "storage",
-    "http://www.omdbapi.com/",
-    "http://www.vandmo.se/"
+    "http://www.omdbapi.com/"
   ]
 }

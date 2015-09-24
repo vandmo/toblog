@@ -49,14 +49,10 @@ function setTitle(titleId) {
 }
 
 function blog(titleId, title, imdbUrl, comment) {
+  var extensionId = "iokfcafeenbckhekpamcnhnijmkenjje";
   var when = new Date().getTime();
-  chrome.storage.sync.get("bloggedMovies", function(v) {
-    if (!v.bloggedMovies) {
-      v.bloggedMovies = {};
-    }
-    v.bloggedMovies[titleId] = {title:title, imdbUrl:imdbUrl, comment:comment, when:when};
-    chrome.storage.sync.set(v);
-  });
+  var bloggedMovie = {titleId:titleId, title:title, imdbUrl:imdbUrl, comment:comment, when:when};
+  chrome.runtime.sendMessage(extensionId, bloggedMovie);
 }
 
 function error(num) {

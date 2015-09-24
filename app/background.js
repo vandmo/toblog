@@ -6,3 +6,15 @@ chrome.app.runtime.onLaunched.addListener(function() {
     }
   });
 });
+
+chrome.runtime.onMessageExternal.addListener(
+  function(bloggedMovie, sender, sendResponse) {
+    chrome.storage.sync.get("bloggedMovies", function(v) {
+      if (!v.bloggedMovies) {
+        v.bloggedMovies = {};
+      }
+      v.bloggedMovies[bloggedMovie.titleId] = bloggedMovie;
+      chrome.storage.sync.set(v);
+    });
+  });
+
