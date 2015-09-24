@@ -14,5 +14,12 @@ document.addEventListener("DOMContentLoaded", function() {
       addToMovieList(v.bloggedMovies[titleId]);
     }
   });
+  document.getElementById("saveButton").addEventListener("click", function() {
+    chrome.fileSystem.chooseEntry({type: 'saveFile', suggestedName: 'myfile.html'}, function(writableFileEntry) {
+      writableFileEntry.createWriter(function(writer) {
+        writer.write(new Blob(["fewfwe"], {type: 'text/plain'}));
+      });
+    });
+  });
 
 });
