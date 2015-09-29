@@ -3,33 +3,28 @@ var selected = {};
 function addToMovieList(bloggedMovie) {
   var list = document.getElementById("movieList");
   var li = document.createElement("li");
-  var inp = document.createElement("input");
-  var ia = document.createAttribute("type");
-  ia.value = "checkbox";
-  inp.setAttributeNode(ia);
-  inp.addEventListener("click", function() {
-    if (inp.checked) {
-      selected[bloggedMovie.titleId] = bloggedMovie;
-    } else {
-      delete selected[bloggedMovie.titleId];
-    }
-  });
-  li.appendChild(inp);
   li.appendChild(document.createTextNode(bloggedMovie.title+" - "+bloggedMovie.comment));
   list.appendChild(li);
 }
 
-function update() {
+function getBloggedMovies(callback) {
   chrome.storage.sync.get("bloggedMovies", function(v) {
-    if (!v.bloggedMovies) {
-      v.bloggedMovies = {};
+    var bloggedMovies = v.bloggedMovies;
+    if (!bloggedMovies) {
+      bloggedMovies = {};
     }
+    callback(bloggedMovies);
+  });
+}
+
+function update() {
+  getBloggedMovies(function(bloggedMovies) {
     var l = document.getElementById("movieList");
     while (l.firstChild) {
       l.removeChild(l.firstChild);
     }
-    for (var titleId in v.bloggedMovies) {
-      addToMovieList(v.bloggedMovies[titleId]);
+    for (var titleId in bloggedMovies) {
+      addToMovieList(bloggedMovies[titleId]);
     }
   });
 }
@@ -45,9 +40,16 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   document.getElementById("exportButton").addEventListener("click", function() {
-    chrome.fileSystem.chooseEntry({type: 'saveFile', suggestedName: 'myfile.html'}, function(writableFileEntry) {
-      writableFileEntry.createWriter(function(writer) {
-        writer.write(new Blob(["fewfwe"], {type: 'text/plain'}));
+    getBloggedMovies(function (bloggedMovies) {
+      var xml = "";
+      for (var titleId in bloggedMovies) {
+        var bloggedMovie = bloggedMovies[titleId];
+        xml += bloggedMovie.title;
+      }
+      chrome.fileSystem.chooseEntry({type: "saveFile", suggestedName: "blog.xml"}, function(writableFileEntry) {
+        writableFileEntry.createWriter(function(writer) {
+          writer.write(new Blob([xml], {type: "text/xml"}));
+        });
       });
     });
   });
