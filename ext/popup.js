@@ -41,6 +41,9 @@ function setTitle(titleId) {
       var comment = document.getElementById("comment").value;
       var imdbUrl = "http://www.imdb.com/title/"+titleId+"/";
       blog(titleId, title, imdbUrl, comment);
+
+      window.close();
+
     });
   };
   x.onerror = function() {
