@@ -29,6 +29,11 @@ function update() {
   });
 }
 
+function formatDate(dateAsLong) {
+  var date = new Date(dateAsLong);
+  return date.toISOString().slice(0, 19).replace("T", " ");
+}
+
 document.addEventListener("DOMContentLoaded", function() {
   update();
 
@@ -41,11 +46,35 @@ document.addEventListener("DOMContentLoaded", function() {
 
   document.getElementById("exportButton").addEventListener("click", function() {
     getBloggedMovies(function (bloggedMovies) {
-      var xml = "";
+      var xml =
+              "<?xml version='1.0' encoding='UTF-8' ?>\n" +
+              "\n" +
+              "<rss\n" +
+              "  version='2.0'\n" +
+              "  xmlns:content='http://purl.org/rss/1.0/modules/content/'\n" +
+              "  xmlns:wp='http://wordpress.org/export/1.2/'>\n" +
+              "\n" +
+              "  <channel>\n" +
+              "    <wp:wxr_version>1.2</wp:wxr_version>\n\n\n";
       for (var titleId in bloggedMovies) {
         var bloggedMovie = bloggedMovies[titleId];
-        xml += bloggedMovie.title;
+        xml +=
+                "<item>\n" +
+                "  <title><![CDATA["+bloggedMovie.title+"]]</title>\n" +
+                "  <category domain='category' nicename='movies'><![CDATA[Movies]]></category>\n" +
+                "  <content:encoded><![CDATA["+bloggedMovie.comment+"]]></content:encoded>\n" +
+                "  <wp:post_date>"+formatDate(bloggedMovie.when)+"</wp:post_date>\n" +
+                "  <wp:post_type>post</wp:post_type>\n" +
+                "  <wp:postmeta>\n" +
+                "    <wp:meta_key>imdb-url</wp:meta_key>\n" +
+                "    <wp:meta_value><![CDATA["+bloggedMovie.imdbUrl+"]]></wp:meta_value>\n" +
+                "  </wp:postmeta>\n" +
+                "</item>\n\n";
       }
+      xml +=
+              "\n\n\n" +
+              "  </channel>\n\n" +
+              "</rss>\n";
       chrome.fileSystem.chooseEntry({type: "saveFile", suggestedName: "blog.xml"}, function(writableFileEntry) {
         writableFileEntry.createWriter(function(writer) {
           writer.write(new Blob([xml], {type: "text/xml"}));
