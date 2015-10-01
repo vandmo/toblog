@@ -29,11 +29,12 @@ function setTitle(titleId) {
     }
 
     document.getElementById("title").textContent = response.Title+", "+response.Year;
+    document.getElementById("actualTitle").value = response.Title;
 
     document.getElementById("blogButton").addEventListener("click", function() {
       document.getElementById("blogButton").disabled = "disabled";
 
-      var title = response.Title;
+      var title = document.getElementById("actualTitle").value;
       if (document.getElementById("includeYear").checked) {
         title = title + " ("+response.Year+")";
       }
