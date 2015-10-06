@@ -3,8 +3,21 @@ var selected = {};
 function addToMovieList(bloggedMovie) {
   var list = document.getElementById("movieList");
   var li = document.createElement("li");
+  var editButton = document.createElement("button");
+  editButton.appendChild(document.createTextNode("Edit"));
+  editButton.addEventListener("click", function() {
+    edit(bloggedMovie);
+  });
+
   li.appendChild(document.createTextNode(bloggedMovie.title+" - "+bloggedMovie.comment));
+  li.appendChild(editButton);
   list.appendChild(li);
+}
+
+function edit(bloggedMovie) {
+  chrome.app.window.create("edit.html", null, function(createdWindow) {
+    createdWindow.contentWindow.bloggedMovie = bloggedMovie;
+  });
 }
 
 function getBloggedMovies(callback) {
