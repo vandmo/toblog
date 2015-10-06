@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var bloggedMovie = bloggedMovies[titleId];
         xml +=
                 "<item>\n" +
-                "  <title><![CDATA["+bloggedMovie.title+"]]</title>\n" +
+                "  <title><![CDATA["+bloggedMovie.title+"]]></title>\n" +
                 "  <category domain='category' nicename='movies'><![CDATA[Movies]]></category>\n" +
                 "  <content:encoded><![CDATA["+bloggedMovie.comment+"]]></content:encoded>\n" +
                 "  <wp:post_date>"+formatDate(bloggedMovie.when)+"</wp:post_date>\n" +
