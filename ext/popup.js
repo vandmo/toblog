@@ -41,9 +41,6 @@ function setTitle(titleId) {
       var comment = document.getElementById("comment").value;
       var imdbUrl = "http://www.imdb.com/title/"+titleId+"/";
       blog(titleId, title, imdbUrl, comment);
-
-      window.close();
-
     });
   };
   x.onerror = function() {
@@ -56,11 +53,17 @@ function blog(titleId, title, imdbUrl, comment) {
   var extensionId = "iokfcafeenbckhekpamcnhnijmkenjje";
   var when = new Date().getTime();
   var bloggedMovie = {titleId:titleId, title:title, imdbUrl:imdbUrl, comment:comment, when:when};
-  chrome.runtime.sendMessage(extensionId, bloggedMovie);
+  chrome.runtime.sendMessage(extensionId, bloggedMovie, function(response) {
+    if (response === "got your message captain") {
+      window.close();
+    } else {
+      error(chrome.runtime.lastError);
+    }
+  });
 }
 
-function error(num) {
-  document.getElementById("title").textContent = "Error, "+num;
+function error(message) {
+  document.getElementById("title").textContent = "Error, "+message;
 }
 
 function renderTitle(titleText) {

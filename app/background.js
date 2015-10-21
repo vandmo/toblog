@@ -16,5 +16,6 @@ chrome.runtime.onMessageExternal.addListener(
       v.bloggedMovies[bloggedMovie.titleId] = bloggedMovie;
       chrome.storage.sync.set(v);
     });
+    sendResponse("got your message captain");
   });
 
