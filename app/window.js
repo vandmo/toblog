@@ -1,5 +1,10 @@
 var selected = {};
 
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    update();
+  });
+
 function addToMovieList(bloggedMovie) {
   var list = document.getElementById("movieList");
   var li = document.createElement("li");

@@ -17,5 +17,6 @@ chrome.runtime.onMessageExternal.addListener(
       chrome.storage.sync.set(v);
     });
     sendResponse("got your message captain");
+    chrome.runtime.sendMessage("update");
   });
 
