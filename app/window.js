@@ -35,14 +35,24 @@ function getBloggedMovies(callback) {
   });
 }
 
+function sort(bloggedMovies) {
+  var arr = [];
+  for (var titleId in bloggedMovies) {
+    arr.push(bloggedMovies[titleId]);
+  }
+  arr.sort(function(a, b) { return a.when-b.when; });
+  return arr;
+}
+
 function update() {
   getBloggedMovies(function(bloggedMovies) {
     var l = document.getElementById("movieList");
     while (l.firstChild) {
       l.removeChild(l.firstChild);
     }
-    for (var titleId in bloggedMovies) {
-      addToMovieList(bloggedMovies[titleId]);
+    var arr = sort(bloggedMovies);
+    for (var i = 0; i < arr.length; ++i) {
+      addToMovieList(arr[i]);
     }
   });
 }
@@ -64,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   document.getElementById("exportButton").addEventListener("click", function() {
     getBloggedMovies(function (bloggedMovies) {
+      var arr = sort(bloggedMovies);
       var xml =
               "<?xml version='1.0' encoding='UTF-8' ?>\n" +
               "\n" +
@@ -74,8 +85,8 @@ document.addEventListener("DOMContentLoaded", function() {
               "\n" +
               "  <channel>\n" +
               "    <wp:wxr_version>1.2</wp:wxr_version>\n\n\n";
-      for (var titleId in bloggedMovies) {
-        var bloggedMovie = bloggedMovies[titleId];
+      for (var i = 0; i < arr.length; ++i) {
+        var bloggedMovie = arr[i];
         xml +=
                 "<item>\n" +
                 "  <title><![CDATA["+bloggedMovie.title+"]]></title>\n" +
