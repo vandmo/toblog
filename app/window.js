@@ -40,7 +40,7 @@ function sort(bloggedMovies) {
   for (var titleId in bloggedMovies) {
     arr.push(bloggedMovies[titleId]);
   }
-  arr.sort(function(a, b) { return a.when-b.when; });
+  arr.sort(function(a, b) { return b.when-a.when; });
   return arr;
 }
 
