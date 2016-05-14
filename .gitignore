@@ -6,3 +6,4 @@
 .vagrant
 target/
 *.crx
+*.zip

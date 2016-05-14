@@ -50,14 +50,21 @@ function setTitle(titleId) {
 }
 
 function blog(titleId, title, imdbUrl, comment) {
-  var extensionId = "iokfcafeenbckhekpamcnhnijmkenjje";
+  var extensionId = "ioioennkojjpeahhlcgkjladbmlehmfg";
   var when = new Date().getTime();
   var bloggedMovie = {titleId:titleId, title:title, imdbUrl:imdbUrl, comment:comment, when:when};
+  chrome.storage.sync.get("bloggedMovies", function(v) {
+    if (!v.bloggedMovies) {
+      v.bloggedMovies = {};
+    }
+    v.bloggedMovies[bloggedMovie.titleId] = bloggedMovie;
+    chrome.storage.sync.set(v);
+  });
   chrome.runtime.sendMessage(extensionId, bloggedMovie, function(response) {
     if (response === "got your message captain") {
       window.close();
     } else {
-      error(chrome.runtime.lastError);
+      error("Could not notify To Blog app. " + chrome.runtime.lastError.message);
     }
   });
 }
